@@ -6,7 +6,7 @@ const africastalking = AfricasTalking({
   username: "sandbox",
 });
 
-const smsSender = async (object) => {
+exports.smsSender = async (object, phoneNumber) => {
   let messageBody = "";
   object.forEach((item) => {
     let tempBody = item.name + "\n" + item.address + "\n \n";
@@ -15,7 +15,7 @@ const smsSender = async (object) => {
 
   try {
     const result = await africastalking.SMS.send({
-      to: "[Your_phone_number_goes_here]",
+      to: phoneNumber,
       message: messageBody,
       from: "IGEFS",
     });

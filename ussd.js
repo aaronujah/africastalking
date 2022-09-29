@@ -1,10 +1,9 @@
-const Session = require("../models/Session");
-const Session = require("../models/User");
-const catchAsync = require("../utils/catchAsync");
-const fetchLocation = require("../utils/fetchLocation");
-const smsSender = require("./utils/sendSMS");
-const AppError = require("../utils/appError");
+const Session = require("./models/Session");
 const User = require("./models/User");
+const catchAsync = require("./utils/catchAsync");
+const fetchLocation = require("./utils/fetchLocation");
+const smsSender = require("./utils/sendSMS");
+const AppError = require("./utils/appError");
 
 let locationResponse = `END We'll send an SMS with Green Energy Retailer close to you`;
 let locations = [];
@@ -108,12 +107,20 @@ exports.ussd = catchAsync(async (res, req, next) => {
     await smsSender(locations, phoneNumber);
     response = locationResponse;
   } else if (text == "1*11") {
-    // This is a second level response where the user selected 1 in the first instance
-    const location = await fetchLocation;
-    // This is a terminal request. Note how we start the response with END
+    const locations = await fetchLocation.fetchNameAddress(
+      fetchLocation.getCloseLocations("ungwan rimi")
+    );
+    await smsSender(locations, phoneNumber);
     response = locationResponse;
   }
 
   req.body.user = user._id;
   const session = await Session.create(req.body);
+
+  res.status(200).JSON({
+    status: "success",
+    data: {
+      response,
+    },
+  });
 });

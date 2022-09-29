@@ -18,7 +18,7 @@ const globalErrorHandler = require("./errorController");
 app.use(cors());
 
 // routes
-app.use("/api/v1/ussd", ussdRouter);
+app.use("/ussd", ussdRouter);
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });

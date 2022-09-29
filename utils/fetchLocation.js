@@ -1,7 +1,7 @@
 const axios = require("axios");
 const YOUR_API_KEY = process.env.GOOGLE_API_KEY;
 
-module.exports.getCloseLocations = (queryString) => {
+exports.getCloseLocations = (queryString) => {
   const formattedString = queryString.replaceAll(" ", "%20");
   const config = {
     method: "get",
@@ -20,7 +20,7 @@ module.exports.getCloseLocations = (queryString) => {
     });
 };
 
-module.exports.fetchNameAddress = (object) => {
+exports.fetchNameAddress = (object) => {
   let formattedObject = [];
   let miniObject = object.results;
   miniObject.forEach((item) => {
